@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User, Client, PaymentMethod, Admin, Plan, Product, Usertype
+from .models import User, Client, PaymentMethod, Admin, Plan, Product, UserType
 # Register your models here.
 
 admin.site.register(User)
@@ -8,7 +8,7 @@ admin.site.register(PaymentMethod)
 admin.site.register(Admin)
 admin.site.register(Plan)
 admin.site.register(Product)
-admin.site.register(Usertype)
+admin.site.register(UserType)
 
 class UserAdmin(admin.ModelAdmin):
     list_display = ('id','username','userType')
@@ -29,4 +29,4 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ('id','message','color',)
     
 class UserTypeAdmin(admin.ModelAdmin):
-    list_display = ('id','name','isAllowedToModifyClients')
+    list_display = ('name','isAllowedToModifyClients')
