@@ -1,8 +1,9 @@
-from .models import Client, User, UserType
+from .models import User
 from django.forms import ModelForm
 
-#class clientForm(ModelForm):
-    #class Meta:
-     #   model = Client
-      #  field = '__all__'
-    
+class UserForm(ModelForm):
+    class Meta:
+        model = User
+        field = ['username','password']
+
+form = UserForm()
