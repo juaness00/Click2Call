@@ -1,4 +1,3 @@
-from sre_constants import JUMP
 from django.db import models
 
 # Create your models here.
