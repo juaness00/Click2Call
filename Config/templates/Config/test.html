@@ -1,9 +1,27 @@
 {% extends 'Config/base.html' %}
 
 {% block content %}
-  <div class=container>
-    <form method='POST' action="">
-      {{form}}
-    </form>
+{% load crispy_forms_tags %}
+<div class="container">
+  <div class="text-center">
+    <main class="form-signin w-100 m-auto">
+      <form method='POST'>
+        {% csrf_token %}
+        <img class="mb-4" src="https://virfon.com/wp-content/uploads/2019/04/logo-color.png" alt="" width="200">
+        <div class='form-floating'>
+          {{form|crispy}}
+        </div>
+        <div class='text-center'>
+          {% if messages %}
+            <ul class="messages">
+            {% for message in messages %}
+              <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+        </div>
+        <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+      </form>
+    </main>
   </div>
 {% endblock  %}
