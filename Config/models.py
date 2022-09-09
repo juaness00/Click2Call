@@ -14,15 +14,18 @@ class User(models.Model):
     
 class Client(User):
     paymentMethod_id = models.ForeignKey('PaymentMethod', on_delete=models.CASCADE)
+    paymentNumber = models.CharField(max_length=255)
     product_id = models.ForeignKey('Product', on_delete=models.CASCADE)
     contactInfo = models.EmailField()
     plan_id = models.ForeignKey('Plan', on_delete=models.CASCADE)
     def __str__(self):
         return self.username
-
+    def __int__(self):
+        return self.id
 class PaymentMethod(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
+    client_id = models.ForeignKey('Client', on_delete=models.CASCADE)
    # payToken = models.CharField()
     def __str__(self):
         return self.name

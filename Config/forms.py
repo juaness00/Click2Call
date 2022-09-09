@@ -11,8 +11,9 @@ class UserForm(ModelForm):
         fields = ['username','password']
 
 class ClientForm(ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
-    contactInfo = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Contact Info'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Password'}),required=False)
+    contactInfo = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Contact Info'}),required=False)
+    paymentNumber = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Payment Number'}),required=False)
     class Meta:
         model = Client
-        fields = ['password','contactInfo']
+        fields = ['password','contactInfo', 'paymentNumber','plan_id']
