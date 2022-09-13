@@ -17,3 +17,16 @@ class ClientForm(ModelForm):
     class Meta:
         model = Client
         fields = ['password','contactInfo', 'paymentNumber','plan_id']
+
+class RegisterForm(ModelForm):
+    username = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Username (No Special Symbols)'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
+    UserType = forms.IntegerField(widget=forms.HiddenInput(), initial='2') 
+    class Meta:
+        model = Client
+        fields = ['username', 'password', 'contactInfo']
+        labels = {'contactInfo':'Email'}
+        widgets = {
+            'contactInfo':forms.TextInput(attrs={'placeholder': 'example@email.com'})
+        }
+

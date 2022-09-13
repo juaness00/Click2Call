@@ -1,10 +1,12 @@
 from django.urls import path
 from . import views
 from .views import dashboard, success
+from django.views.generic.base import RedirectView
 urlpatterns = [
-    path('', views.index, name = 'index'),
-    path('test/', views.test, name = 'test'),
-    path('test/dashboard/',dashboard),
-    path('test/dashboard/settings/success/',success),
-    path('test/dashboard/settings/', views.settings, name = 'settings')
+    path('', RedirectView.as_view(url='login/'), name='login'),
+    path('login/', views.login, name = 'login'),
+    path('register/',views.register, name = 'register'),
+    path('login/dashboard/',dashboard),
+    path('login/dashboard/info/success/',success),
+    path('login/dashboard/info/', views.info, name = 'info')
 ]
