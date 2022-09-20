@@ -217,7 +217,7 @@ def movieChange(request):
             'producer': producer,
             'releaseDate': releaseDate
         }
-        return render(request,'config/movieDetails.html',context)
+        return redirect('http://127.0.0.1:8000/login/dashboard/movie/',context)
     else:
         form = MovieForm()
         url = 'https://swapi.dev/api/films'
