@@ -1,9 +1,6 @@
 from .models import User, Client
 from django.forms import ModelForm
 from django import forms
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit
-
 class UserForm(ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
     class Meta:
@@ -30,3 +27,5 @@ class RegisterForm(ModelForm):
             'contactInfo':forms.TextInput(attrs={'placeholder': 'example@email.com'})
         }
 
+class MovieForm(forms.Form):
+    favoriteMovie = forms.ChoiceField()

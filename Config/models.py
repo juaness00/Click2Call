@@ -18,6 +18,7 @@ class Client(User):
     product_id = models.ForeignKey('Product', on_delete=models.CASCADE, null=True)
     contactInfo = models.EmailField()
     plan_id = models.ForeignKey('Plan', on_delete=models.CASCADE, null=True)
+    favoriteMovie = models.CharField(max_length=255, null=True)
     def __str__(self):
         return self.username
     def __int__(self):

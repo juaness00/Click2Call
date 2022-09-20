@@ -1,9 +1,11 @@
 
 from django.shortcuts import render, redirect
-from .forms import ClientForm, UserForm, RegisterForm
+from .forms import ClientForm, UserForm, RegisterForm, MovieForm
 from .models import User, Client
 from django.contrib import messages
 import requests
+from urllib.request import urlopen
+import json
 # Create your views here.
 def index(request):
     return render(request, 'Config/error.html')
@@ -106,3 +108,125 @@ def info(request):
         username =request.session['username']
         context = {'form': form, 'username': username}
         return render(request,'Config/info.html', context)
+
+def movie(request):
+    if request.method == 'POST':
+        username = request.session['username']
+        favoriteMovie = request.POST['Favorite Movie']
+        print(favoriteMovie, username)
+        currentClient = Client.objects.get(username=username)
+        if currentClient.favoriteMovie != favoriteMovie:
+            currentClient.favoriteMovie = favoriteMovie
+            currentClient.save()
+            url = 'https://swapi.dev/api/films'
+            response = urlopen(url)
+            data_json = json.loads(response.read())
+            films = data_json['results']
+            for film in films:
+                if film['title'] == favoriteMovie:
+                    url = film['url']
+            response = urlopen(url)
+            data_json = json.loads(response.read())
+            film = data_json
+            title = film['title']
+            for item in title:
+                openingCrawl = film['opening_crawl']
+                director = film['director']
+                producer = film['producer']
+                releaseDate = film['release_date']
+            context={
+                'title': title,
+                "openingCrawl": openingCrawl,
+                'director': director,
+                'producer': producer,
+                'releaseDate': releaseDate
+            }
+            return render(request,'config/movieDetails.html',context)
+    else:
+        username = request.session['username']
+        currentClient = Client.objects.get(username=username)
+        favoriteMovie = currentClient.favoriteMovie
+        print(favoriteMovie, username)
+        if currentClient.favoriteMovie != None:
+            url = 'https://swapi.dev/api/films'
+            response = urlopen(url)
+            data_json = json.loads(response.read())
+            films = data_json['results']
+            for film in films:
+                    if film['title'] == favoriteMovie:
+                        url = film['url']
+            response = urlopen(url)
+            data_json = json.loads(response.read())
+            film = data_json
+            title = film['title']
+            for item in title:
+                openingCrawl = film['opening_crawl']
+                director = film['director']
+                producer = film['producer']
+                releaseDate = film['release_date']
+            context={
+                'title': title,
+                "openingCrawl": openingCrawl,
+                'director': director,
+                'producer': producer,
+                'releaseDate': releaseDate
+            }
+            return render(request,'config/movieDetails.html',context)
+        else:
+            form = MovieForm()
+            url = 'https://swapi.dev/api/films'
+            response = urlopen(url)
+            data_json = json.loads(response.read())
+            films = data_json['results']
+            titles=[]
+            for film in films:
+                titles.append(film['title'])
+            print(titles)
+            context = {'form': form,'titles':titles}
+            return render(request, 'Config/movieChange.html',context)
+
+
+def movieChange(request):
+    if request.method == 'POST':
+        username = request.session['username']
+        favoriteMovie = request.POST['Favorite Movie']
+        print(favoriteMovie, username)
+        currentClient = Client.objects.get(username=username)
+        currentClient.favoriteMovie = favoriteMovie
+        currentClient.save()
+        url = 'https://swapi.dev/api/films'
+        response = urlopen(url)
+        data_json = json.loads(response.read())
+        films = data_json['results']
+        for film in films:
+            if film['title'] == favoriteMovie:
+                url = film['url']
+        response = urlopen(url)
+        data_json = json.loads(response.read())
+        film = data_json
+        title = film['title']
+        for item in title:
+            openingCrawl = film['opening_crawl']
+            director = film['director']
+            producer = film['producer']
+            releaseDate = film['release_date']
+        context={
+            'title': title,
+            "openingCrawl": openingCrawl,
+            'director': director,
+            'producer': producer,
+            'releaseDate': releaseDate
+        }
+        return render(request,'config/movieDetails.html',context)
+    else:
+        form = MovieForm()
+        url = 'https://swapi.dev/api/films'
+        response = urlopen(url)
+        data_json = json.loads(response.read())
+        films = data_json['results']
+        titles=[]
+        for film in films:
+            titles.append(film['title'])
+        print(titles)
+        context = {'form': form,'titles':titles}
+        return render(request, 'Config/movieChange.html',context)
