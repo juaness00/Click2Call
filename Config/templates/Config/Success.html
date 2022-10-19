@@ -1,6 +1,7 @@
 {% extends 'Config/base.html' %}
 {% block content %}
 {% load crispy_forms_tags %}
+{% load i18n %}
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
   <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="#">Click 2 Call</a>
   <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
@@ -21,8 +22,8 @@
         <ul class="nav flex-column">
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="http://127.0.0.1:8000/login/dashboard/">
-              <span data-feather="home" class="align-text-bottom"></span>
-              Home
+              <span data-feather="{% trans 'Home'%}" class="align-text-bottom"></span>
+              {% trans 'Home'%}
             </a>
           </li>
           <li class="nav-item">
@@ -34,7 +35,7 @@
           <li class="nav-item">
             <a class="nav-link" href="http://127.0.0.1:8000/login/dashboard/movie">
               <span data-feather="file" class="align-text-bottom"></span>
-              Favorite Movie
+              {% trans 'Favorite Movie'%}
             </a>
           </li>
         </ul>
@@ -47,9 +48,9 @@
       </div>
       <div class="px-4 py-5 my-5 text-center">
         <img class="mb-4" src="https://virfon.com/wp-content/uploads/2019/04/logo-color.png" alt="" width="200">
-        <h1 class="display-5 fw-bold">Welcome to the Dashboard!</h1>
+        <h1 class="display-5 fw-bold">{% trans 'Welcome to the Dashboard!'%}</h1>
         <div class="col-lg-6 mx-auto">
-          <p class="lead mb-4">You are signed in as {{username}}</p>
+          <p class="lead mb-4">{% trans 'You are signed in as '%} {{username}}</p>
         </div>
       </div>
     </main>

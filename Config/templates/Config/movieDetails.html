@@ -1,6 +1,7 @@
 {% extends 'Config/base.html' %}
 {% block content %}
 {% load crispy_forms_tags %}
+{% load i18n %}
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
   <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="#">Click 2 Call</a>
   <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
@@ -21,8 +22,8 @@
         <ul class="nav flex-column">
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="http://127.0.0.1:8000/login/dashboard/">
-              <span data-feather="home" class="align-text-bottom"></span>
-              Home
+              <span data-feather="{% trans 'Home'%}" class="align-text-bottom"></span>
+              {% trans 'Home'%}
             </a>
           </li>
           <li class="nav-item">
@@ -34,7 +35,7 @@
           <li class="nav-item">
             <a class="nav-link" href="http://127.0.0.1:8000/login/dashboard/movie">
               <span data-feather="file" class="align-text-bottom"></span>
-              Favorite Movie
+              {% trans 'Favorite Movie'%}
             </a>
           </li>
         </ul>
@@ -46,7 +47,7 @@
             <h1 class="h2">Info</h1>
         </div>
         <div class="px-4 py-5 my-5 text-center">
-            <h1 class="display-5 fw-bold">Your Favorite Film</h1>
+            <h1 class="display-5 fw-bold">{% trans 'Your Favorite Film' %}</h1>
             {% if messages %}
             <ul class="messages">
             {% for message in messages %}
@@ -57,9 +58,9 @@
             <div class="list-group">
                 <a href="#" class="list-group-item list-group-item-action">{{title}}</a>
                 <a href="#" class="list-group-item list-group-item-action">{{openingCrawl}}</a>
-                <a href="#" class="list-group-item list-group-item-action">Directed by: {{director}}</a>
-                <a href="#" class="list-group-item list-group-item-action">Produced By: {{producer}}</a>
-                <a href="#" class="list-group-item list-group-item-action">Released on: {{releaseDate}}</a>
+                <a href="#" class="list-group-item list-group-item-action">{% trans 'Directed by: '%} {{director}}</a>
+                <a href="#" class="list-group-item list-group-item-action">{% trans 'Produced By: '%} {{producer}}</a>
+                <a href="#" class="list-group-item list-group-item-action">{% trans 'Released on: '%} {{releaseDate}}</a>
             </div>
             <a class="w-100 btn btn-lg btn-secondary" href="http://127.0.0.1:8000/login/dashboard/movie/change">Change Favorite Movie</a>
         </div>

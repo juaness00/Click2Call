@@ -1,4 +1,4 @@
-
+from django.utils import translation
 from django.shortcuts import render, redirect
 from .forms import ClientForm, UserForm, RegisterForm, MovieForm
 from .models import User, Client
@@ -6,6 +6,11 @@ from django.contrib import messages
 import requests
 from urllib.request import urlopen
 import json
+import ssl
+from django.db import transaction
+
+ssl._create_default_https_context = ssl._create_unverified_context
+
 # Create your views here.
 def index(request):
     return render(request, 'Config/error.html')
@@ -15,6 +20,7 @@ def register(request):
         username = request.POST['username']
         contactInfo = request.POST['contactInfo']
         form = RegisterForm(request.POST)
+        print(request.POST['language'])
         if len(username) > 0:
             if Client.objects.filter(username=username).exists():
                 messages.warning(request, 'Username already exists')
@@ -53,9 +59,11 @@ def login(request):
         username = request.POST['username']
         password = request.POST['password']
         if User.objects.filter(username=username).exists():
-            currentUser = User.objects.filter(username=username)
-            if currentUser.filter(password=password).exists():
+            currentUser = User.objects.get(username=username)
+
+            if currentUser.password == password:
                 request.session['username'] = username
+                request.session['language'] = currentUser.language
                 currentUser = request.session['username']
                 request.session.modified = True
                 context = {'username': currentUser}
@@ -76,30 +84,38 @@ def login(request):
 
 def dashboard(request):
     username = request.session['username']
+    translation.activate(request.session['language'])
     context = {'username':username}
     return render(request,'Config/Success.html',context)
 
 def success(request):
+    translation.activate(request.session['language'])
     return render(request,'Config/SuccessfulChange.html')
 
 def info(request):
+    translation.activate(request.session['language'])
     if request.method == 'POST':
         username = request.session['username']
         password = request.POST['password']
         contactInfo = request.POST['contactInfo']
         paymentNumber = request.POST['paymentNumber']
-
-        currentUser = User.objects.get(username=username)
+        language = request.POST['language']
+        print(language)
         currentClient = Client.objects.get(username=username)
-        print(password, contactInfo, currentUser)
+        print(password, contactInfo, currentClient.language, language)
         if len(password) > 0:
-            currentUser.password = password
+            currentClient.password = password
         if len(contactInfo) > 0:
             currentClient.contactInfo = contactInfo
         if len(paymentNumber) > 0:
             currentClient.paymentNumber = paymentNumber
-        currentUser.save()
+        if len(language) > 0:
+            currentClient.language = language
+            print(currentClient.language)
         currentClient.save()
+        print(Client.objects.get(username=username).language)
+        request.session['language'] = currentClient.language
+        request.session.modified = True
         messages.success(request, 'Profile details updated.')
         response = redirect('success/')
         return response
@@ -110,6 +126,7 @@ def info(request):
         return render(request,'Config/info.html', context)
 
 def movie(request):
+    translation.activate(request.session['language'])
     if request.method == 'POST':
         username = request.session['username']
         favoriteMovie = request.POST['Favorite Movie']
@@ -126,9 +143,8 @@ def movie(request):
                 if film['title'] == favoriteMovie:
                     url = film['url']
             response = urlopen(url)
-            data_json = json.loads(response.read())
-            film = data_json
-            title = film['title']
+            data_json = json.loads(response.read()) 
+            title = data_json['title']
             for item in title:
                 openingCrawl = film['opening_crawl']
                 director = film['director']
@@ -187,6 +203,7 @@ def movie(request):
 
 
 def movieChange(request):
+    translation.activate(request.session['language'])
     if request.method == 'POST':
         username = request.session['username']
         favoriteMovie = request.POST['Favorite Movie']

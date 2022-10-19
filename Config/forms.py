@@ -13,12 +13,13 @@ class ClientForm(ModelForm):
     paymentNumber = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Payment Number'}),required=False)
     class Meta:
         model = Client
-        fields = ['password','contactInfo', 'paymentNumber','plan_id']
+        fields = ['password','contactInfo', 'paymentNumber', 'language']
 
 class RegisterForm(ModelForm):
     username = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Username (No Special Symbols)'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
     UserType = forms.IntegerField(widget=forms.HiddenInput(), initial='2') 
+    language = forms.CharField(widget=forms.HiddenInput(), initial='en-us') 
     class Meta:
         model = Client
         fields = ['username', 'password', 'contactInfo']

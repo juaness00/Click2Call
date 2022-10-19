@@ -7,6 +7,11 @@ class User(models.Model):
     username = models.CharField(max_length=255,unique= True)
     password = models.CharField(max_length=255)
     userType = models.ForeignKey('UserType', on_delete=models.CASCADE, null=True)
+    LANGUAGE_CHOICES = (
+    ('en-us', 'English'),
+    ('es', 'Español'),
+    )
+    language = models.CharField(default='en-us', choices=LANGUAGE_CHOICES, max_length=5)
     def __str__(self):
         return self.username
     def __int__(self):
@@ -23,6 +28,7 @@ class Client(User):
         return self.username
     def __int__(self):
         return self.id
+
 class PaymentMethod(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
